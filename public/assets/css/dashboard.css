@@ -1,0 +1,32 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 400px;
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+h1 {
+    margin-bottom: 20px;
+}
+
+.user-info {
+    margin-bottom: 10px;
+}
+
+.logout-link {
+    color: #f44336;
+}
+
+.logout-link:hover {
+    text-decoration: underline;
+}

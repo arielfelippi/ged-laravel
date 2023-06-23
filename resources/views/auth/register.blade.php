@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Cadastro de Usuário</title>
+    <link rel="stylesheet" href="{{ asset('assets/css/register.css') }}">
 </head>
 <body>
     <h2>Cadastro de Usuário</h2>

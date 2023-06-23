@@ -14,13 +14,12 @@ use App\Http\Controllers\AuthController;
 |
 */
 
-Route::get('/', function ()
-{
-    return view('welcome');
-});
+Route::get('/', [AuthController::class, 'register'])->name('register');
+Route::get('/register', [AuthController::class, 'register'])->name('register');
+Route::post('/register', [AuthController::class, 'store']);
 
-// Rota para registro de usuários
-Route::post('/register', [AuthController::class, 'register']);
+Route::get('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/login', [AuthController::class, 'authenticate']);
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// Rota para login de usuários
-Route::post('/login', [AuthController::class, 'login']);
+Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('dashboard')->middleware('auth');
