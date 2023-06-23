@@ -5,22 +5,53 @@ body {
     height: 100vh;
     margin: 0;
     padding: 0;
+    background-color: #222;
+    color: #fff;
 }
 
-form {
-    width: 300px;
+.container {
+    width: 400px;
+    margin: 0 auto;
+    text-align: center;
+    background-color: #333;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.container form {
+    width: 340px;
     border: 1px solid #ccc;
     padding: 20px;
     border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-input {
+.container input {
     width: 100%;
     padding: 10px;
     margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
 }
 
-button {
+.container div {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.container label {
+    text-align: left;
+}
+
+.container button {
     width: 100%;
     padding: 10px;
     background-color: #4caf50;
@@ -30,13 +61,22 @@ button {
     cursor: pointer;
 }
 
-button:hover {
+.container button:hover {
     background-color: #45a049;
 }
 
-.alert {
+.container .alert {
     background-color: #f44336;
     color: #fff;
     padding: 10px;
     margin-bottom: 10px;
+}
+
+.container p a {
+    color: #ffc107;
+    text-decoration: none;
+}
+
+.container p a:hover {
+    color: #ffca2b;
 }

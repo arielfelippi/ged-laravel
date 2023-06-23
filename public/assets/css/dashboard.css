@@ -5,28 +5,31 @@ body {
     height: 100vh;
     margin: 0;
     padding: 0;
+    background-color: #222;
+    color: #fff;
 }
 
 .container {
     width: 400px;
-    border: 1px solid #ccc;
-    padding: 20px;
-    border-radius: 5px;
+    margin: 0 auto;
     text-align: center;
+    background-color: #333;
+    color: #fff;
 }
 
-h1 {
+.container h1 {
+    margin-top: 0;
     margin-bottom: 20px;
 }
 
-.user-info {
+.container .user-info {
     margin-bottom: 10px;
 }
 
-.logout-link {
+.container .logout-link {
     color: #f44336;
 }
 
-.logout-link:hover {
+.container .logout-link:hover {
     text-decoration: underline;
 }
