@@ -20,19 +20,32 @@
             <input type="text" name="search" placeholder="Pesquisar documentos">
             <button type="submit">Buscar</button>
         </div>
-        <table>
-            <thead>
-                <tr>
-                    <th>Nome do Documento</th>
-                    <th>Data de Upload</th>
-                    <th>Proprietário</th>
-                    <th>Compartilhado</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Aqui você pode adicionar as linhas da tabela com os documentos -->
-            </tbody>
-        </table>
+        @if(empty($documentos))
+            <p>Nenhum documento encontrado.</p>
+        @else
+            <table>
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Nome do Documento</th>
+                        <th>Proprietário</th>
+                        <th>Compartilhado</th>
+                        <th>Data de Criação</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($documentos as $documento)
+                        <tr>
+                            <td>{{ $documento->id }}</td>
+                            <td>{{ $documento->nome }}</td>
+                            <td>{{ $documento->usuario_id }}</td>
+                            <td>-</td>
+                            <td>{{ date('d/m/Y H:i', strtotime($documento->created_at)) }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        @endif
         <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
             @csrf
         </form>

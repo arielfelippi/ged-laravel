@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Documentos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -58,7 +59,18 @@ class AuthController extends Controller
 
     public function dashboard()
     {
-        return view('dashboard');
+        $userId = auth()->user()->id;
+
+        $documentos = Documentos::where('usuario_id', $userId)
+        ->orWhereIn('id', function ($query) use ($userId)
+        {
+            $query->select('documento_id')
+                ->from('documentos_permissao')
+                ->where('usuario_id', $userId);
+        })
+        ->get() ?? [];
+
+        return view('dashboard', ['documentos' => $documentos]);
     }
 
     public function logout(Request $request)

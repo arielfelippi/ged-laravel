@@ -37,6 +37,9 @@
                 <button type="submit" class="btn btn-primary">Salvar Conteúdo</button>
             </div>
         </form>
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+            @csrf
+        </form>
     </div>
     <script>
         tinymce.init({

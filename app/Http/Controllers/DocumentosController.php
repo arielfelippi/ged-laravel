@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Documentos;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class DocumentosController extends Controller
 {
@@ -45,9 +46,18 @@ class DocumentosController extends Controller
 
     public function showConteudo($id)
     {
-        $documento = Documentos::findOrFail($id) ?? [];
+        $userId = auth()->user()->id;
 
-        return view('documentos', ['documento' => $documento]);
+        $documentos = Documentos::where('usuario_id', $userId)
+        ->orWhereIn('id', function ($query) use ($userId)
+        {
+            $query->select('documento_id')
+                ->from('documentos_permissao')
+                ->where('usuario_id', $userId);
+        })
+        ->get() ?? [];
+
+        return view('documentos', ['documento' => $documentos]);
     }
 
     public function updateConteudo(Request $request)
@@ -60,7 +70,7 @@ class DocumentosController extends Controller
             $documento = Documentos::findOrFail($id);
         }
 
-        $documento->nome = "";
+        $documento->nome = "Rich-text";
         $documento->usuario_id = auth()->user()->id;
         $documento->conteudo = $request->input('conteudo');
         $documento->save();

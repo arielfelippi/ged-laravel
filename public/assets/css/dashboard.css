@@ -102,9 +102,9 @@ body {
 }
 
 .container tbody tr:nth-child(even) {
-    background-color: #f9f9f9;
+    background-color: #4d494967;
 }
 
 .container tbody tr:hover {
-    background-color: #f5f5f5;
+    background-color: #949393;
 }

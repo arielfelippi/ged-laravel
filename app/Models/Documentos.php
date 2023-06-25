@@ -22,4 +22,9 @@ class Documentos extends Model
     {
         return $this->belongsTo(User::class, 'usuario_id');
     }
+
+    public function permissao()
+    {
+        return $this->hasOne(DocumentosPermissao::class, 'documento_id');
+    }
 }
