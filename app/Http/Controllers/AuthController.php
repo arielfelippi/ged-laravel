@@ -27,7 +27,10 @@ class AuthController extends Controller
             'password' => bcrypt($validatedData['password']),
         ]);
 
-        return redirect('/login')->with('success', 'Usuário cadastrado com sucesso!');
+        return redirect('/login')->withInput([
+            'email' => $user->email,
+            'password' => $validatedData['password'],
+        ]);
     }
 
     public function login()
