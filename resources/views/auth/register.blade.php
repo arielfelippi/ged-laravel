@@ -1,10 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Cadastro de Usuário</title>
-    <link rel="stylesheet" href="{{ asset('assets/css/register.css') }}">
-</head>
-<body>
+@extends('layouts.app')
+
+@section('content')
+    <header>
+        <link rel="stylesheet" href="{{ asset('assets/css/register.css') }}">
+    </header>
     <div class="container">
         <h2>Cadastro de Usuário</h2>
 
@@ -44,5 +43,4 @@
 
         <p>Já possui uma conta? <a href="{{ route('login') }}">Faça login</a></p>
     </div>
-</body>
-</html>
+@endsection

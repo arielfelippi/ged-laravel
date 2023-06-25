@@ -1,10 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Dashboard</title>
-    <link rel="stylesheet" href="{{ asset('assets/css/dashboard.css') }}">
-</head>
-<body>
+@extends('layouts.app')
+
+@section('content')
+    <header>
+        <link rel="stylesheet" href="{{ asset('assets/css/dashboard.css') }}">
+    </header>
     <div class="container">
         <h1>Dashboard</h1>
         <div class="user-info">
@@ -18,5 +17,4 @@
             @csrf
         </form>
     </div>
-</body>
-</html>
+@endsection

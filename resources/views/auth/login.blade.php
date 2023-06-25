@@ -1,10 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Login de Usuário</title>
-    <link rel="stylesheet" href="{{ asset('assets/css/login.css') }}">
-</head>
-<body>
+@extends('layouts.app')
+
+@section('content')
+    <header>
+        <link rel="stylesheet" href="{{ asset('assets/css/login.css') }}">
+    </header>
     <div class="container">
         <h1>Login de Usuário</h1>
 
@@ -33,5 +32,4 @@
 
         <p><a href="{{ route('register') }}" class="back-link">Voltar</a></p>
     </div>
-</body>
-</html>
+@endsection
