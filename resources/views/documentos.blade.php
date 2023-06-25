@@ -21,7 +21,7 @@
             @csrf
             <div class="form-group">
                 <label for="documento"></label>
-                <input type="file" class="form-control-file" id="documento" name="documento" accept=".pdf,.doc,.docx">
+                <input type="file" class="form-control-file" id="arquivo" name="arquivo" accept=".pdf,.doc,.docx">
             </div>
             <button type="submit" class="btn btn-primary">Enviar</button>
         </form>

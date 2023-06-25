@@ -26,13 +26,17 @@ class DocumentosController extends Controller
         // Obtém o arquivo enviado
         $arquivo = $request->file('arquivo');
 
-        // Salva o arquivo em um diretório específico
+        // Obtém a extensão do arquivo
+        $extensao = $arquivo->extension() ?? 'txt';
+
+        // Salva o arquivo em um diretório específico(storage/app/documentos).
         $caminho = $arquivo->store('documentos');
 
         // Cria um novo documento no banco de dados
         $documento = new Documentos();
         $documento->usuario_id = auth()->user()->id;
         $documento->nome = $arquivo->getClientOriginalName();
+        $documento->extensao = $extensao;
         $documento->caminho_arquivo = $caminho;
         $documento->save();
 
