@@ -9,8 +9,8 @@
             <p>Bem vindo(a), {{ Auth::user()->name }}</p>
         </div>
         <ul>
-            <li><a href="#">Inicial</a></li>
-            <li><a href="#">Documentos</a></li>
+            <li><a href="/dashboard">Inicial</a></li>
+            <li><a href="{{ route('documentos') }}">Documentos</a></li>
             <li><a href="{{ route('logout') }}" class="logout-link" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Sair</a></li>
         </ul>
     </div>
