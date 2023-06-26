@@ -30,10 +30,11 @@
                 <thead>
                     <tr>
                         <th>Id</th>
-                        <th>Nome do Documento</th>
+                        <th>Documento</th>
                         <th>Proprietário</th>
                         <th>Permissões</th>
                         <th>Data de Criação</th>
+                        <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -44,6 +45,26 @@
                             <td>{{ $documento->nome_usuario }}</td>
                             <td>{{ $documento->permissoes }}</td>
                             <td>{{ date('d/m/Y H:i', strtotime($documento->criacao)) }}</td>
+                            <td>
+                                <form action="{{ route('documentos.compartilhar') }}" method="POST">
+                                    @csrf
+                                    <input type="password" id="documento_id" name="documento_id" hidden value="{{ $documento->id ?? 0 }}">
+                                    <select name="usuario_id">
+                                        <option value="">Selecionar usuário</option>
+                                        @foreach ($usuarios as $usuario)
+                                            <option value="{{ $usuario->id }}">{{ $usuario->name }}</option>
+                                        @endforeach
+                                    </select>
+                                    <select name="permissao">
+                                        <option value="visualizar">Visualizar</option>
+                                        @if($documento->extensao == 'txt')
+                                            <option value="editar">Editar</option>
+                                        @endif
+                                        <option value="excluir">Excluir</option>
+                                    </select>
+                                    <button type="submit">Compartilhar</button>
+                                </form>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>

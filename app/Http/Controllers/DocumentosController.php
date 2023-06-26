@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Documentos;
 use Illuminate\Http\Request;
+use App\Models\DocumentosPermissao;
 use Illuminate\Support\Facades\Auth;
 
 class DocumentosController extends Controller
@@ -78,5 +79,36 @@ class DocumentosController extends Controller
         if (empty($termoBusca)) {
             return Documentos::getDocumentos();
         }
+    }
+
+    public function compartilhar(Request $request)
+    {
+        $documentoId = $request->input('documento_id');
+        $usuarioId = $request->input('usuario_id');
+        $permissao = $request->input('permissao');
+
+        $permissoes = ['visualizar', 'editar', 'excluir'];
+
+        if (empty($documentoId)) {
+            return redirect()->back()->with('error', 'Ocorreu um erro ao compartilhar o documento(documento_id inválido).');
+        }
+
+        if (empty($usuarioId)) {
+            return redirect()->back()->with('error', 'Ocorreu um erro ao compartilhar o documento(usuario_id inválido).');
+        }
+
+        if (!in_array($permissao, $permissoes)) {
+            return redirect()->back()->with('error', 'Ocorreu um erro ao compartilhar o documento(permissao inválida).');
+        }
+
+        $documentoPermissao = new DocumentosPermissao();
+        $documentoPermissao->documento_id = $documentoId;
+        $documentoPermissao->usuario_id = $usuarioId;
+        $documentoPermissao->pode_ver = ($permissao === 'visualizar');
+        $documentoPermissao->pode_editar = ($permissao === 'editar');
+        $documentoPermissao->pode_excluir = ($permissao === 'excluir');
+        $documentoPermissao->save();
+
+        return redirect()->back()->with('success', 'Documento compartilhado com sucesso!');
     }
 }

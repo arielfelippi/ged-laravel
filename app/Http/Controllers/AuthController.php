@@ -60,8 +60,9 @@ class AuthController extends Controller
     public function dashboard()
     {
         $documentos = Documentos::getDocumentos();
+        $usuarios = User::all();
 
-        return view('dashboard', ['documentos' => $documentos]);
+        return view('dashboard', ['documentos' => $documentos, "usuarios" => $usuarios]);
     }
 
     public function logout(Request $request)
