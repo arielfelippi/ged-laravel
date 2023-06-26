@@ -31,3 +31,5 @@ Route::post('/documentos/pesquisar', [DocumentosController::class, 'pesquisar'])
 Route::post('/documentos/compartilhar', [DocumentosController::class, 'compartilhar'])->name('documentos.compartilhar');
 Route::get('/documentos/conteudo/{id?}', [DocumentosController::class, 'showConteudo'])->name('documentos.conteudo');
 Route::post('/documentos/conteudo/update', [DocumentosController::class, 'updateConteudo'])->name('documentos.conteudo.update');
+
+Route::get('/documentos/visualizar/{caminhoArquivo}', [DocumentosController::class, 'visualizar'])->name('documentos.visualizar');

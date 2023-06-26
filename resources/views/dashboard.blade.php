@@ -39,11 +39,24 @@
                 </thead>
                 <tbody>
                     @foreach ($documentos as $documento)
+                        @php
+                            $permissoes = str_replace(" |", "", trim($documento->permissoes));
+                        @endphp
                         <tr>
                             <td>{{ $documento->id }}</td>
-                            <td>{{ $documento->nome }}</td>
+                            <td>
+                                @if($documento->usuario_id == Auth::user()->id || $permissoes == 'todas')
+                                    <a href="{{ route('documentos.conteudo', ['id' => $documento->id]) }}">{{ $documento->nome }}</a>
+                                    @else
+                                    @if($permissoes == 'visualizar')
+                                        <a href="/storage/{{ $documento->caminho_arquivo }}" target="_blank">{{ $documento->nome }}</a>
+                                    @else
+                                        {{ $documento->nome }}
+                                    @endif
+                                @endif
+                            </td>
                             <td>{{ $documento->nome_usuario }}</td>
-                            <td>{{ $documento->permissoes }}</td>
+                            <td>{{ $permissoes }}</td>
                             <td>{{ date('d/m/Y H:i', strtotime($documento->criacao)) }}</td>
                             <td>
                                 <form action="{{ route('documentos.compartilhar') }}" method="POST">

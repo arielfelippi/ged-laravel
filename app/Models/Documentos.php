@@ -43,9 +43,9 @@ class Documentos extends Model
                 users.name AS nome_usuario,
                 CASE
                     WHEN doc.usuario_id = {$userId} THEN 'todas'
-                    ELSE CONCAT('ver: ', IFNULL(IF(dp.pode_ver, 'Sim', 'Não'), 'Não'), ' | ',
-                                'editar: ', IFNULL(IF(dp.pode_editar, 'Sim', 'Não'), 'Não'), ' | ',
-                                'excluir: ', IFNULL(IF(dp.pode_excluir, 'Sim', 'Não'), 'Não'))
+                    ELSE CONCAT(IFNULL(IF(dp.pode_ver, 'visualizar | ', ''), ''), '',
+                                IFNULL(IF(dp.pode_editar, 'editar | ', ''), ''), '',
+                                IFNULL(IF(dp.pode_excluir, 'excluir', ''), ''))
                 END AS permissoes,
                 doc.created_at AS criacao,
                 doc.updated_at AS atualizacao

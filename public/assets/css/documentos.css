@@ -114,4 +114,6 @@ body {
     color: #fff;
 }
 
-
+.form-group {
+    padding: 10px;
+}

@@ -3,7 +3,8 @@
 @section('content')
     <header>
         <link rel="stylesheet" href="{{ asset('assets/css/documentos.css') }}">
-        <script src="https://cdn.tiny.cloud/1/24a13y3aalsllnynwa6j6wdrv5r3v72ps2rtvn7zl75scwgf/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+        <script src="{{ asset('assets/js/ckeditor.min.js')}}"></script>
+        <!-- <script src="https://cdn.ckeditor.com/ckeditor5/38.0.1/classic/ckeditor.js"></script> -->
     </header>
     <div class="sidebar">
         <div class="user-info">
@@ -28,10 +29,31 @@
 
         <form action="{{ route('documentos.conteudo.update') }}" method="POST">
             @csrf
-            <input type="password" name="id" hidden value="{{ $documento->id ?? 0 }}">
+            <input type="password" id="documento_id" name="documento_id" hidden value="{{ $documento->id ?? 0 }}">
+            <style>
+                #container {
+                    width: 1000px;
+                    margin: 20px auto;
+                }
+                .ck.ck-editor__main>.ck-editor__editable {
+                    background-color: #333;
+                    color: #fff;
+                }
+                .ck-editor__editable[role="textbox"] {
+                    /* editing area */
+                    min-height: 200px;
+                }
+                .ck-content .image {
+                    /* block images */
+                    max-width: 80%;
+                    margin: 20px auto;
+                }
+            </style>
+
             <div class="form-group">
-                <label for="conteudo">Redação de Documento</label>
-                <textarea id="conteudo" name="conteudo">{{ $documento->conteudo ?? '' }}</textarea>
+                <label for="conteudo" class="form-group">Redação de Documento</label>
+                <br/>
+                <textarea id="editor" name="editor">{{ $documento->conteudo ?? '' }}</textarea>
             </div>
             <div class="form-group">
                 <button type="submit" class="btn btn-primary">Salvar Conteúdo</button>
@@ -41,18 +63,13 @@
             @csrf
         </form>
     </div>
+
     <script>
-        tinymce.init({
-            selector: 'textarea#conteudo',
-            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss',
-            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
-            tinycomments_mode: 'embedded',
-            tinycomments_author: 'Author name',
-            mergetags_list: [
-                { value: 'First.Name', title: 'First Name' },
-                { value: 'Email', title: 'Email' },
-            ],
-            menubar: false
-        });
+        ClassicEditor
+            .create( document.querySelector( '#editor' ) )
+            .catch( error => {
+                console.error( error );
+            } );
     </script>
+
 @endsection
