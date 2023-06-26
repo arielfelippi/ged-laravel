@@ -46,7 +46,9 @@ class DocumentosController extends Controller
 
     public function showConteudo($id = 0)
     {
-        $documentos = Documentos::findOrFail($id);
+        // $documentos = Documentos::findOrFail($id);
+
+        $documentos = Documentos::getDocumentos($id);
 
         return view('documentos', ['documento' => $documentos]);
     }
