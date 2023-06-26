@@ -27,5 +27,6 @@ Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('dashboard'
 
 Route::get('/documentos', [DocumentosController::class, 'index'])->name('documentos');
 Route::post('/documentos/upload', [DocumentosController::class, 'upload'])->name('documentos.upload');
+Route::post('/documentos/pesquisar', [DocumentosController::class, 'pesquisar'])->name('documentos.pesquisar');
 Route::get('/documentos/conteudo/{id?}', [DocumentosController::class, 'showConteudo'])->name('documentos.conteudo');
 Route::post('/documentos/conteudo/update', [DocumentosController::class, 'updateConteudo'])->name('documentos.conteudo.update');

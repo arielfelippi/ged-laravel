@@ -44,18 +44,9 @@ class DocumentosController extends Controller
         return redirect()->back()->with('success', 'Documento enviado com sucesso!');
     }
 
-    public function showConteudo($id)
+    public function showConteudo($id = 0)
     {
-        $userId = auth()->user()->id;
-
-        $documentos = Documentos::where('usuario_id', $userId)
-        ->orWhereIn('id', function ($query) use ($userId)
-        {
-            $query->select('documento_id')
-                ->from('documentos_permissao')
-                ->where('usuario_id', $userId);
-        })
-        ->get() ?? [];
+        $documentos = Documentos::findOrFail($id);
 
         return view('documentos', ['documento' => $documentos]);
     }
@@ -76,5 +67,14 @@ class DocumentosController extends Controller
         $documento->save();
 
         return redirect()->route('documentos.conteudo', ['id' => $documento->id])->with('success', 'Conteúdo salvo com sucesso!');
+    }
+
+    public function pesquisar(Request $request)
+    {
+        $termoBusca = $request->input('termo_busca', '');
+
+        if (empty($termoBusca)) {
+            return Documentos::getDocumentos();
+        }
     }
 }

@@ -59,16 +59,7 @@ class AuthController extends Controller
 
     public function dashboard()
     {
-        $userId = auth()->user()->id;
-
-        $documentos = Documentos::where('usuario_id', $userId)
-        ->orWhereIn('id', function ($query) use ($userId)
-        {
-            $query->select('documento_id')
-                ->from('documentos_permissao')
-                ->where('usuario_id', $userId);
-        })
-        ->get() ?? [];
+        $documentos = Documentos::getDocumentos();
 
         return view('dashboard', ['documentos' => $documentos]);
     }

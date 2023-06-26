@@ -16,10 +16,13 @@
     </div>
     <div class="container">
         <h1>Dashboard</h1>
-        <div class="search-form">
-            <input type="text" name="search" placeholder="Pesquisar documentos">
-            <button type="submit">Buscar</button>
-        </div>
+        <form action="{{ route('documentos.pesquisar') }}" method="POST">
+            @csrf
+            <div class="search-form">
+                <input type="text" id="termo_busca" name="termo_busca" placeholder="Pesquisar documentos">
+                <button type="submit">Buscar</button>
+            </div>
+        </form>
         @if(empty($documentos))
             <p>Nenhum documento encontrado.</p>
         @else
@@ -29,7 +32,7 @@
                         <th>Id</th>
                         <th>Nome do Documento</th>
                         <th>Proprietário</th>
-                        <th>Compartilhado</th>
+                        <th>Permissões</th>
                         <th>Data de Criação</th>
                     </tr>
                 </thead>
@@ -38,9 +41,9 @@
                         <tr>
                             <td>{{ $documento->id }}</td>
                             <td>{{ $documento->nome }}</td>
-                            <td>{{ $documento->usuario_id }}</td>
-                            <td>-</td>
-                            <td>{{ date('d/m/Y H:i', strtotime($documento->created_at)) }}</td>
+                            <td>{{ $documento->nome_usuario }}</td>
+                            <td>{{ $documento->permissoes }}</td>
+                            <td>{{ date('d/m/Y H:i', strtotime($documento->criacao)) }}</td>
                         </tr>
                     @endforeach
                 </tbody>
