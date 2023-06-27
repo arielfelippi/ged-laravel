@@ -107,4 +107,19 @@
             @csrf
         </form>
     </div>
+    <script>
+        const acoesExcluir = document.querySelectorAll('.acoes-excluir');
+        acoesExcluir.forEach((botaoExcluir) => {
+            botaoExcluir.addEventListener('click', (event) => {
+                event.preventDefault(); // Impede o comportamento padrão do link
+
+                const confirmacao = confirm('Deseja excluir este item?');
+
+                if (confirmacao) {
+                    const url = botaoExcluir.getAttribute('href');
+                    window.location.href = url; // Redireciona para a URL de exclusão
+                }
+            });
+        });
+    </script>
 @endsection
