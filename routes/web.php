@@ -33,3 +33,4 @@ Route::get('/documentos/conteudo/{id?}', [DocumentosController::class, 'showCont
 Route::post('/documentos/conteudo/update', [DocumentosController::class, 'updateConteudo'])->name('documentos.conteudo.update');
 
 Route::get('/documentos/visualizar/{caminhoArquivo}', [DocumentosController::class, 'visualizar'])->name('documentos.visualizar');
+Route::get('/documentos/excluir/{id}', [DocumentosController::class, 'excluir'])->name('documentos.excluir');

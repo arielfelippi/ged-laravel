@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Documentos;
 use Illuminate\Http\Request;
 use App\Models\DocumentosPermissao;
@@ -40,7 +41,7 @@ class DocumentosController extends Controller
 
         // Cria um novo documento no banco de dados
         $documento = new Documentos();
-        $documento->usuario_id = auth()->user()->id;
+        $documento->usuario_id = Auth::user()->id;
         $documento->nome = $nomeOriginal;
         $documento->extensao = $extensao;
         $documento->caminho_arquivo = $caminho;
@@ -67,20 +68,11 @@ class DocumentosController extends Controller
         }
 
         $documento->nome = "Rich-text";
-        $documento->usuario_id = auth()->user()->id;
-        $documento->conteudo = $request->input('editor');
+        $documento->usuario_id = Auth::user()->id;
+        $documento->conteudo = $request->input('content_editor');
         $documento->save();
 
         return redirect()->route('documentos.conteudo', ['id' => $documento->id])->with('success', 'Conteúdo salvo com sucesso!');
-    }
-
-    public function pesquisar(Request $request)
-    {
-        $termoBusca = trim($request->input('termo_busca', ''));
-
-        if (empty($termoBusca)) {
-            return Documentos::getDocumentos();
-        }
     }
 
     public function compartilhar(Request $request)
@@ -103,8 +95,13 @@ class DocumentosController extends Controller
             return redirect()->back()->with('error', 'Ocorreu um erro ao compartilhar o documento(permissao inválida).');
         }
 
-        $documentoPermissao = new DocumentosPermissao();
-        $documentoPermissao->documento_id = $documentoId;
+        $documentoPermissao = DocumentosPermissao::where('documento_id', $documentoId)->first();
+
+        if (empty($documentoPermissao)) {
+            $documentoPermissao = new DocumentosPermissao();
+            $documentoPermissao->documento_id = $documentoId;
+        }
+
         $documentoPermissao->usuario_id = $usuarioId;
         $documentoPermissao->pode_ver = ($permissao === 'visualizar');
         $documentoPermissao->pode_editar = ($permissao === 'editar');
@@ -120,5 +117,52 @@ class DocumentosController extends Controller
 
         // Redirecionar para a URL do arquivo
         return redirect($urlArquivo);
+    }
+
+    public function pesquisar(Request $request)
+    {
+        $termoBusca = trim($request->input('termo_busca', ''));
+
+        if (empty($termoBusca)) {
+            return redirect()->route('dashboard');
+        }
+
+        $documentos = Documentos::query()
+        ->when($termoBusca, function ($query, $termo)
+        {
+            $query->where(function ($subquery) use ($termo)
+            {
+                $subquery->where('nome', 'like', '%' . $termo . '%')
+                    ->orWhere('extensao', 'like', '%' . $termo . '%')
+                    ->orWhere('caminho_arquivo', 'like', '%' . $termo . '%')
+                    ->orWhere('usuario_id', 'like', '%' . $termo . '%')
+                    ->orWhere('created_at', 'like', '%' . $termo . '%')
+                    ->orWhere('updated_at', 'like', '%' . $termo . '%')
+                    ->orWhere('conteudo', 'like', '%' . $termo . '%');
+            });
+        })
+        ->get();
+
+        $usuarios = User::all();
+
+        return view('dashboard', ['documentos' => $documentos, "usuarios" => $usuarios]);
+    }
+
+    public function excluir($id)
+    {
+        if (empty($id)) {
+            return redirect()->back()->with('error', 'Ocorreu um erro ao excluir o documento(id inválido).');
+        }
+
+        // Encontre o documento pelo ID
+        $documento = Documentos::find($id);
+
+        if (empty($documento)) {
+            return redirect()->back()->with('error', 'Ocorreu um erro ao excluir o documento, documento não encontrado.');
+        }
+
+        $documento->delete();
+
+        return redirect()->back()->with('success', 'Documento excluido com sucesso!');
     }
 }
