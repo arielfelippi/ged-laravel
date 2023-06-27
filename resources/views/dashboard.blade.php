@@ -33,30 +33,46 @@
                         <th>Documento</th>
                         <th>Proprietário</th>
                         <th>Permissões</th>
+                        <th>Conteúdo</th>
                         <th>Data de Criação</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
+                    <style>
+                        .container a.dash-permissoes {
+                            color: #ffc107 !important;
+                            text-decoration: none;
+                        }
+
+                        .container a.dash-permissoes:hover {
+                            color: #ffca2b !important;
+                            text-decoration: underline;
+                        }
+                    </style>
                     @foreach ($documentos as $documento)
                         @php
                             $permissoes = str_replace(" |", "", trim($documento->permissoes));
+                            $proprietario = ($documento->usuario_id == Auth::user()->id || $permissoes == 'todas');
                         @endphp
                         <tr>
                             <td>{{ $documento->id }}</td>
                             <td>
-                                @if($documento->usuario_id == Auth::user()->id || $permissoes == 'todas')
-                                    <a href="{{ route('documentos.conteudo', ['id' => $documento->id]) }}">{{ $documento->nome }}</a>
-                                    @else
-                                    @if($permissoes == 'visualizar')
-                                        <a href="/storage/{{ $documento->caminho_arquivo }}" target="_blank">{{ $documento->nome }}</a>
-                                    @else
-                                        {{ $documento->nome }}
-                                    @endif
+                                @if($proprietario)
+                                    <a class="dash-permissoes" href="{{ route('documentos.conteudo', ['id' => $documento->id]) }}">{{ $documento->nome }}</a>
+                                @elseif($permissoes == 'visualizar' && $documento->extensao != 'txt')
+                                    <a class="dash-permissoes" href="/storage/{{ $documento->caminho_arquivo }}" target="_blank">{{ $documento->nome }}</a>
+                                @elseif($permissoes == 'editar')
+                                    <a class="dash-permissoes" href="{{ route('documentos.conteudo', ['id' => $documento->id]) }}">{{ $documento->nome }}</a>
+                                @elseif($permissoes == 'excluir' && $documento->extensao != 'txt')
+                                    <a class="dash-permissoes" href="{{ route('documentos.conteudo', ['id' => $documento->id]) }}">{{ $documento->nome }}</a>
+                                @else
+                                    {{ $documento->nome }}
                                 @endif
                             </td>
                             <td>{{ $documento->nome_usuario }}</td>
                             <td>{{ $permissoes }}</td>
+                            <td>{{ $documento->conteudo ?? 'Arquivo' }}</td>
                             <td>{{ date('d/m/Y H:i', strtotime($documento->criacao)) }}</td>
                             <td>
                                 <form action="{{ route('documentos.compartilhar') }}" method="POST">

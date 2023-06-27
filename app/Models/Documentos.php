@@ -35,8 +35,8 @@ class Documentos extends Model
 
         $sql = (
             "SELECT doc.id AS id,
-                doc.nome,
-                doc.extensao,
+                doc.nome AS nome,
+                doc.extensao AS extensao,
                 IFNULL(doc.caminho_arquivo, '') AS caminho_arquivo,
                 IFNULL(doc.conteudo, '') AS conteudo,
                 users.id AS usuario_id,
