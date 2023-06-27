@@ -110,27 +110,29 @@
                             <td>{{ $conteudo }}</td>
                             <td>{{ $dataCriacao }}</td>
                             <td>
-                                @if($proprietario|| ($permissoes == 'excluir'))
+                                @if($proprietario || ($permissoes == 'excluir'))
                                     <a class="acoes-excluir" href="{{ route('documentos.excluir', ['id' => $documento->id]) }}">Excluir</a>
                                 @endif
-                                <form action="{{ route('documentos.compartilhar') }}" method="POST">
-                                    @csrf
-                                    <input type="password" id="documento_id" name="documento_id" hidden value="{{ $documento->id ?? 0 }}">
-                                    <select name="usuario_id">
-                                        <option value="">Selecionar usuário</option>
-                                        @foreach ($usuarios as $usuario)
-                                            <option value="{{ $usuario->id }}">{{ $usuario->name }}</option>
-                                        @endforeach
-                                    </select>
-                                    <select name="permissao">
-                                        <option value="visualizar">Visualizar</option>
-                                        @if($documento->extensao == 'txt')
-                                            <option value="editar">Editar</option>
-                                        @endif
-                                        <option value="excluir">Excluir</option>
-                                    </select>
-                                    <button type="submit">Compartilhar</button>
-                                </form>
+                                @if($proprietario)
+                                    <form action="{{ route('documentos.compartilhar') }}" method="POST">
+                                        @csrf
+                                        <input type="password" id="documento_id" name="documento_id" hidden value="{{ $documento->id ?? 0 }}">
+                                        <select name="usuario_id">
+                                            <option value="">Selecionar usuário</option>
+                                            @foreach ($usuarios as $usuario)
+                                                <option value="{{ $usuario->id }}">{{ $usuario->name }}</option>
+                                            @endforeach
+                                        </select>
+                                        <select name="permissao">
+                                            <option value="visualizar">Visualizar</option>
+                                            @if($documento->extensao == 'txt')
+                                                <option value="editar">Editar</option>
+                                            @endif
+                                            <option value="excluir">Excluir</option>
+                                        </select>
+                                        <button type="submit">Compartilhar</button>
+                                    </form>
+                                @endif
                             </td>
                         </tr>
                     @endforeach

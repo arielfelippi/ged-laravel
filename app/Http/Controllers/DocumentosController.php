@@ -61,14 +61,23 @@ class DocumentosController extends Controller
     {
         $documento_id = $request->input('documento_id', 0);
 
-        if (empty($documento_id)) {
-            $documento = new Documentos();
-        } else {
+        $isNew = true;
+        $documento = '';
+
+        if (!empty($documento_id)) {
+            $isNew = false;
             $documento = Documentos::findOrFail($documento_id);
         }
 
+        if (empty($documento_id) || empty($documento)) {
+            $documento = new Documentos();
+        }
+
+        if ($isNew) {
+            $documento->usuario_id = Auth::user()->id;
+        }
+
         $documento->nome = "Rich-text";
-        $documento->usuario_id = Auth::user()->id;
         $documento->conteudo = $request->input('content_editor');
         $documento->save();
 
